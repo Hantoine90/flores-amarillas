@@ -141,7 +141,7 @@
 
   <!-- Reproductor de música -->
   <div class="player">
-    <img src="flores-amarillas.jpeg" alt="Flores Amarillas">
+    <img src="flores-amarillas.jpg" alt="Flores Amarillas">
     <h3>Flores amarillas 🌼</h3>
     <div class="controls">
       <button onclick="toggleMusic()">▶️</button>
@@ -238,7 +238,14 @@
         window.scrollBy({ top: window.innerHeight, behavior: "smooth" });
       });
     });
+
+    // 🌼 Autoplay al hacer clic en cualquier parte
+    document.body.addEventListener("click", () => {
+      if (!isPlaying) {
+        music.play().then(() => isPlaying = true)
+        .catch(err => console.log("Autoplay bloqueado:", err));
+      }
+    }, { once: true });
   </script>
 </body>
 </html>
-
