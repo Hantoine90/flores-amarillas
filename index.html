@@ -32,33 +32,58 @@
       100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
     }
 
-    /* Botón romántico */
+    /* Reproductor romántico */
     .player {
       position: fixed;
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
-      text-align: center;
       z-index: 20;
-      background: #ff4d6d;
-      padding: 20px 35px;
-      border-radius: 50px;
-      cursor: pointer;
-      font-weight: bold;
-      color: #fff;
+      background: #fff;
+      border-radius: 20px;
+      padding: 15px;
+      width: 320px;
+      text-align: center;
       box-shadow: 0 0 15px rgba(0,0,0,0.3);
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      font-size: 2rem;
-      animation: heartbeat 1.5s infinite;
-      user-select: none;
     }
-    .player span { font-size: 2rem; }
-    #music-label { font-size: 1.2rem; }
-    @keyframes heartbeat {
-      0%, 100% { transform: translateX(-50%) scale(1); }
-      50% { transform: translateX(-50%) scale(1.1); }
+    .player img {
+      width: 100%;
+      border-radius: 15px;
+      margin-bottom: 10px;
+    }
+    .player h3 {
+      margin: 5px 0;
+      font-size: 1.1rem;
+      color: #ff4d6d;
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 8px 0;
+    }
+    .controls button {
+      background: #ff4d6d;
+      border: none;
+      color: #fff;
+      font-size: 1.2rem;
+      padding: 10px 15px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    }
+    .progress-container {
+      width: 100%;
+      height: 6px;
+      background: #eee;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .progress {
+      height: 6px;
+      background: #ff4d6d;
+      width: 0%;
+      border-radius: 5px;
     }
 
     /* Secciones */
@@ -69,7 +94,7 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 2rem 1rem;
+      padding: 2rem 1rem 4rem 1rem;
       position: relative;
       z-index: 10;
       opacity: 0;
@@ -81,27 +106,27 @@
       transform: translateY(0);
     }
     section.frase img {
-      width: 90%;
-      max-width: 400px;
+      width: 100%;
+      max-height: 70vh;
+      object-fit: cover;
       border-radius: 20px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       box-shadow: 0 0 15px rgba(0,0,0,0.2);
     }
     section.frase h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 1.5rem; /* más legible en cel */
+      font-size: 1.6rem;
       color: #000;
       text-shadow: 1px 1px 4px rgba(255,255,255,0.7);
       max-width: 850px;
       line-height: 1.5;
-      margin-bottom: 15px;
+      margin-bottom: 5px;
     }
 
     /* Flecha de scroll */
     .scroll-indicator {
-      position: absolute;
-      bottom: 15px;
-      font-size: 3rem;
+      margin-top: 5px;
+      font-size: 2.5rem;
       color: #ff4d6d;
       animation: bounce 1.5s infinite;
       cursor: pointer;
@@ -110,22 +135,20 @@
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(10px); }
     }
-
-    /* Responsivo */
-    @media (min-width: 768px) {
-      section.frase h1 {
-        font-size: 2rem;
-      }
-      .player { font-size: 2.2rem; }
-      #music-label { font-size: 1.5rem; }
-    }
   </style>
 </head>
 <body>
 
-  <!-- Botón romántico para música -->
-  <div class="player" onclick="toggleMusic()">
-    <span>❤️</span> <span id="music-label">Reproducir música</span> <span>🎶</span>
+  <!-- Reproductor de música -->
+  <div class="player">
+    <img src="flores-amarillas.jpg" alt="Flores Amarillas">
+    <h3>Flores amarillas 🌼</h3>
+    <div class="controls">
+      <button onclick="toggleMusic()">▶️</button>
+    </div>
+    <div class="progress-container" onclick="setProgress(event)">
+      <div class="progress" id="progress"></div>
+    </div>
   </div>
 
   <audio id="bg-music" loop>
@@ -133,7 +156,7 @@
     Tu navegador no soporta audio HTML5.
   </audio>
 
-  <!-- Frases con fotos -->
+  <!-- Secciones con frases -->
   <section class="frase">
     <img src="foto1.jpg" alt="Foto 1">
     <h1>🌼💛 Hoy, 21 de septiembre, te regalo flores amarillas no solo como símbolo de amistad y alegría, sino también como una promesa: la de estar contigo en cada paso, llenando tus días de esperanza, sonrisas y sueños compartidos 💛🌼</h1>
@@ -181,17 +204,32 @@
     }, { threshold: 0.3 });
     secciones.forEach(sec => observer.observe(sec));
 
-    // 🌼 Botón de música
+    // 🌼 Música con progreso
     const music = document.getElementById("bg-music");
-    const label = document.getElementById("music-label");
+    const progress = document.getElementById("progress");
+    let isPlaying = false;
+
     function toggleMusic() {
-      if (music.paused) {
-        music.play();
-        label.textContent = "Pausar música";
-      } else {
+      if (isPlaying) {
         music.pause();
-        label.textContent = "Reproducir música";
+        isPlaying = false;
+      } else {
+        music.play();
+        isPlaying = true;
       }
+    }
+
+    music.addEventListener("timeupdate", () => {
+      const { duration, currentTime } = music;
+      const percent = (currentTime / duration) * 100;
+      progress.style.width = percent + "%";
+    });
+
+    function setProgress(e) {
+      const width = e.currentTarget.clientWidth;
+      const clickX = e.offsetX;
+      const duration = music.duration;
+      music.currentTime = (clickX / width) * duration;
     }
 
     // 🌼 Flechas que hacen scroll
