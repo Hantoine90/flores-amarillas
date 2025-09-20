@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Flores para ti 🌼</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #fff4c2, #ffd580, #ffb347);
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Flores flotando */
+    .flower {
+      position: fixed;
+      top: 0;
+      font-size: 40px;
+      color: #FFD700;
+      animation: float 10s linear infinite;
+      pointer-events: none;
+      z-index: 5;
+      text-shadow: 0 0 8px rgba(255, 140, 0, 0.8), 0 0 15px rgba(255, 215, 0, 0.6);
+    }
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Botón romántico */
+    .player {
+      position: fixed;
+      top: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 20;
+      background: #ff4d6d;
+      padding: 12px 25px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+      animation: heartbeat 1.5s infinite;
+      user-select: none;
+    }
+    .player span { font-size: 20px; }
+    @keyframes heartbeat {
+      0%, 100% { transform: translateX(-50%) scale(1); }
+      50% { transform: translateX(-50%) scale(1.1); }
+    }
+
+    /* Secciones */
+    section.frase {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      z-index: 10;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 1s ease;
+    }
+    section.frase.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    section.frase h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      color: #000; /* Negro */
+      text-shadow: 1px 1px 4px rgba(255,255,255,0.7);
+      max-width: 850px;
+      line-height: 1.5;
+    }
+
+    /* Flecha de scroll */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 20px;
+      font-size: 6rem;
+      color: #ff4d6d;
+      animation: bounce 1.5s infinite;
+      cursor: pointer;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(10px); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Botón romántico para música -->
+  <div class="player" onclick="toggleMusic()">
+    <span>❤️</span> <span id="music-label">Reproducir música</span> <span>🎶</span>
+  </div>
+
+  <audio id="bg-music" loop>
+    <source src="flores.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio HTML5.
+  </audio>
+
+  <!-- Frases extendidas -->
+  <section class="frase">
+    <h1>🌼💛 Hoy, 21 de septiembre, te regalo flores amarillas no solo como símbolo de amistad y alegría, sino también como una promesa: la de estar contigo en cada paso, llenando tus días de esperanza, sonrisas y sueños compartidos 💛🌼</h1>
+    <div class="scroll-indicator">⬇️</div>
+  </section>
+
+  <section class="frase">
+    <h1>🌻 Así como las flores iluminan con su color los campos, tú iluminas mi vida con tu ternura y tu luz. Cada instante contigo es un amanecer lleno de fuerza y alegría, como si el universo me recordara lo afortunado que soy de tenerte 🌻</h1>
+    <div class="scroll-indicator">⬇️</div>
+  </section>
+
+  <section class="frase">
+    <h1>💛 Dicen que las flores amarillas representan sueños cumplidos, y para mí, el mayor de todos esos sueños eres tú. Eres la razón por la que creo en los comienzos, en los milagros pequeños y en la magia de los días especiales 💛</h1>
+    <div class="scroll-indicator">⬇️</div>
+  </section>
+
+  <section class="frase">
+    <h1>🌼 Este día de flores amarillas no es solo una tradición, es un recordatorio de lo valiosa que eres en mi vida. Que nunca te falten motivos para sonreír, que cada meta tuya florezca, y que siempre encuentres en mí alguien que te admire y te apoye 🌼</h1>
+  </section>
+
+  <!-- Script -->
+  <script>
+    // 🌼 Flores flotando
+    const flowers = ["🌼", "🌻", "💛"];
+    function createFlower() {
+      const flower = document.createElement("div");
+      flower.className = "flower";
+      flower.innerText = flowers[Math.floor(Math.random() * flowers.length)];
+      flower.style.left = Math.random() * 100 + "vw";
+      flower.style.animationDuration = 5 + Math.random() * 5 + "s";
+      document.body.appendChild(flower);
+      setTimeout(() => flower.remove(), 10000);
+    }
+    setInterval(createFlower, 600);
+
+    // 🌼 Animación frases
+    const secciones = document.querySelectorAll(".frase");
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add("visible");
+      });
+    }, { threshold: 0.3 });
+    secciones.forEach(sec => observer.observe(sec));
+
+    // 🌼 Botón de música
+    const music = document.getElementById("bg-music");
+    const label = document.getElementById("music-label");
+    function toggleMusic() {
+      if (music.paused) {
+        music.play();
+        label.textContent = "Pausar música";
+      } else {
+        music.pause();
+        label.textContent = "Reproducir música";
+      }
+    }
+
+    // 🌼 Flechas que hacen scroll
+    document.querySelectorAll(".scroll-indicator").forEach(flecha => {
+      flecha.addEventListener("click", () => {
+        window.scrollBy({ top: window.innerHeight, behavior: "smooth" });
+      });
+    });
+  </script>
+</body>
+</html>
