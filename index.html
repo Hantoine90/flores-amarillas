@@ -32,7 +32,7 @@
       100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
     }
 
-    /* Reproductor romántico */
+    /* Reproductor */
     .player {
       position: fixed;
       top: 20px;
@@ -67,7 +67,7 @@
       border: none;
       color: #fff;
       font-size: 1.2rem;
-      padding: 10px 15px;
+      padding: 12px 18px;
       border-radius: 50%;
       cursor: pointer;
       box-shadow: 0 0 8px rgba(0,0,0,0.2);
@@ -123,7 +123,7 @@
       margin-bottom: 5px;
     }
 
-    /* Flecha de scroll */
+    /* Flecha */
     .scroll-indicator {
       margin-top: 5px;
       font-size: 2.5rem;
@@ -139,12 +139,12 @@
 </head>
 <body>
 
-  <!-- Reproductor de música -->
+  <!-- Reproductor -->
   <div class="player">
-    <img src="flores-amarillas.jpg" alt="Flores Amarillas">
+    <img src="flores-amarillas.jpeg" alt="Flores Amarillas">
     <h3>Flores amarillas 🌼</h3>
     <div class="controls">
-      <button onclick="toggleMusic()">▶️</button>
+      <button id="play-btn">▶️</button>
     </div>
     <div class="progress-container" onclick="setProgress(event)">
       <div class="progress" id="progress"></div>
@@ -156,33 +156,29 @@
     Tu navegador no soporta audio HTML5.
   </audio>
 
-  <!-- Secciones con frases -->
+  <!-- Secciones -->
   <section class="frase">
     <img src="foto1.jpg" alt="Foto 1">
-    <h1>🌼💛 Hoy, 21 de septiembre, te regalo flores amarillas no solo como símbolo de amistad y alegría, sino también como una promesa: la de estar contigo en cada paso, llenando tus días de esperanza, sonrisas y sueños compartidos 💛🌼</h1>
+    <h1>🌼💛 Hoy, 21 de septiembre, te regalo flores amarillas...</h1>
     <div class="scroll-indicator">⬇️</div>
   </section>
-
   <section class="frase">
     <img src="foto2.jpg" alt="Foto 2">
-    <h1>🌻 Así como las flores iluminan con su color los campos, tú iluminas mi vida con tu ternura y tu luz. Cada instante contigo es un amanecer lleno de fuerza y alegría, como si el universo me recordara lo afortunado que soy de tenerte 🌻</h1>
+    <h1>🌻 Así como las flores iluminan con su color los campos...</h1>
     <div class="scroll-indicator">⬇️</div>
   </section>
-
   <section class="frase">
     <img src="foto3.jpg" alt="Foto 3">
-    <h1>💛 Dicen que las flores amarillas representan sueños cumplidos, y para mí, el mayor de todos esos sueños eres tú. Eres la razón por la que creo en los comienzos, en los milagros pequeños y en la magia de los días especiales 💛</h1>
+    <h1>💛 Dicen que las flores amarillas representan sueños cumplidos...</h1>
     <div class="scroll-indicator">⬇️</div>
   </section>
-
   <section class="frase">
     <img src="foto4.jpg" alt="Foto 4">
-    <h1>🌼 Este día de flores amarillas no es solo una tradición, es un recordatorio de lo valiosa que eres en mi vida. Que nunca te falten motivos para sonreír, que cada meta tuya florezca, y que siempre encuentres en mí alguien que te admire y te apoye 🌼</h1>
+    <h1>🌼 Este día de flores amarillas no es solo una tradición...</h1>
   </section>
 
-  <!-- Script -->
   <script>
-    // 🌼 Flores flotando
+    // Flores flotando
     const flowers = ["🌼", "🌻", "💛"];
     function createFlower() {
       const flower = document.createElement("div");
@@ -195,7 +191,7 @@
     }
     setInterval(createFlower, 600);
 
-    // 🌼 Animación frases
+    // Animar frases
     const secciones = document.querySelectorAll(".frase");
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -204,47 +200,56 @@
     }, { threshold: 0.3 });
     secciones.forEach(sec => observer.observe(sec));
 
-    // 🌼 Música con progreso
+    // Música
     const music = document.getElementById("bg-music");
+    const playBtn = document.getElementById("play-btn");
     const progress = document.getElementById("progress");
     let isPlaying = false;
 
-    function toggleMusic() {
-      if (isPlaying) {
-        music.pause();
-        isPlaying = false;
-      } else {
-        music.play();
+    function playMusic() {
+      music.play().then(() => {
         isPlaying = true;
-      }
+        playBtn.textContent = "⏸️";
+      }).catch(err => {
+        console.log("Autoplay bloqueado, espera interacción");
+      });
     }
+    function pauseMusic() {
+      music.pause();
+      isPlaying = false;
+      playBtn.textContent = "▶️";
+    }
+    function toggleMusic() {
+      isPlaying ? pauseMusic() : playMusic();
+    }
+    playBtn.addEventListener("click", toggleMusic);
 
+    // Progreso
     music.addEventListener("timeupdate", () => {
       const { duration, currentTime } = music;
-      const percent = (currentTime / duration) * 100;
-      progress.style.width = percent + "%";
+      progress.style.width = (currentTime / duration) * 100 + "%";
     });
-
     function setProgress(e) {
       const width = e.currentTarget.clientWidth;
       const clickX = e.offsetX;
-      const duration = music.duration;
-      music.currentTime = (clickX / width) * duration;
+      music.currentTime = (clickX / width) * music.duration;
     }
 
-    // 🌼 Flechas que hacen scroll
+    // Flechas
     document.querySelectorAll(".scroll-indicator").forEach(flecha => {
       flecha.addEventListener("click", () => {
         window.scrollBy({ top: window.innerHeight, behavior: "smooth" });
       });
     });
 
-    // 🌼 Autoplay al hacer clic en cualquier parte
+    // Intento de autoplay al cargar
+    window.addEventListener("load", () => {
+      playMusic();
+    });
+
+    // Si falla el autoplay, primer clic activa
     document.body.addEventListener("click", () => {
-      if (!isPlaying) {
-        music.play().then(() => isPlaying = true)
-        .catch(err => console.log("Autoplay bloqueado:", err));
-      }
+      if (!isPlaying) playMusic();
     }, { once: true });
   </script>
 </body>
