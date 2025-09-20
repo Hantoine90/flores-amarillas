@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <title>Flores para ti 🌼</title>
 
-    <!-- Open Graph Meta Tags -->
-  <meta property="og:title" content="🌼 Para Lucero, una mujer especial🌼">
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="🌼 Para Lucero, una mujer especial 🌼">
   <meta property="og:description" content="Un detalle especial solo para ti 💛✨">
   <meta property="og:image" content="https://hantoine90.github.io/flores-amarillas/preview.png">
   <meta property="og:url" content="https://hantoine90.github.io/flores-amarillas/">
@@ -17,39 +17,10 @@
   <meta name="twitter:description" content="Un detalle especial solo para ti 💛✨">
   <meta name="twitter:image" content="https://hantoine90.github.io/flores-amarillas/preview.png">
 
-  
+  <!-- Fuentes -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400&display=swap" rel="stylesheet">
 
   <style>
-
-/* Ajustes para pantallas grandes (laptops/PCs) */
-@media (min-width: 1024px) {
-  section.frase img {
-    width: 60%;      /* más pequeñas en laptop */
-    max-height: 60vh;
-  }
-  section.frase h1 {
-    font-size: 2rem; /* texto un poco más grande y legible */
-    max-width: 70%;
-  }
-  .player {
-    width: 400px;    /* reproductor más amplio */
-  }
-}
-
-/* Ajustes para tablets */
-@media (min-width: 768px) and (max-width: 1023px) {
-  section.frase img {
-    width: 75%;
-    max-height: 65vh;
-  }
-  section.frase h1 {
-    font-size: 1.8rem;
-    max-width: 80%;
-  }
-}
-
-    
     body {
       margin: 0;
       padding: 0;
@@ -179,6 +150,35 @@
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(10px); }
     }
+
+    /* --- MEDIA QUERIES --- */
+
+    /* Tablets */
+    @media (min-width: 768px) and (max-width: 1023px) {
+      section.frase img {
+        width: 75%;
+        max-height: 65vh;
+      }
+      section.frase h1 {
+        font-size: 1.8rem;
+        max-width: 80%;
+      }
+    }
+
+    /* Laptops/PC */
+    @media (min-width: 1024px) {
+      section.frase img {
+        width: 60%;
+        max-height: 60vh;
+      }
+      section.frase h1 {
+        font-size: 2rem;
+        max-width: 70%;
+      }
+      .player {
+        width: 400px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -298,7 +298,3 @@
   </script>
 </body>
 </html>
-
-
-
-
