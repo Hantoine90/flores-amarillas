@@ -19,7 +19,7 @@
     .flower {
       position: fixed;
       top: 0;
-      font-size: 40px;
+      font-size: 32px;
       color: #FFD700;
       animation: float 10s linear infinite;
       pointer-events: none;
@@ -35,29 +35,29 @@
     /* Botón romántico */
     .player {
       position: fixed;
-      top: 15px;
+      top: 10px;
       left: 50%;
       transform: translateX(-50%);
       text-align: center;
       z-index: 20;
       background: #ff4d6d;
-      padding: 12px 25px;
-      border-radius: 30px;
+      padding: 8px 15px;
+      border-radius: 25px;
       cursor: pointer;
       font-weight: bold;
       color: #fff;
       box-shadow: 0 0 10px rgba(0,0,0,0.2);
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 36px;
+      gap: 6px;
+      font-size: 22px; /* 🔹 más pequeño */
       animation: heartbeat 1.5s infinite;
       user-select: none;
     }
-    .player span { font-size: 20px; }
+    .player span { font-size: 18px; }
     @keyframes heartbeat {
       0%, 100% { transform: translateX(-50%) scale(1); }
-      50% { transform: translateX(-50%) scale(1.1); }
+      50% { transform: translateX(-50%) scale(1.05); }
     }
 
     /* Secciones */
@@ -68,11 +68,11 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 2rem;
+      padding: 1.5rem;
       position: relative;
       z-index: 10;
       opacity: 0;
-      transform: translateY(50px);
+      transform: translateY(40px);
       transition: all 1s ease;
     }
     section.frase.visible {
@@ -81,25 +81,40 @@
     }
     section.frase h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 2.2rem;
-      color: #000; /* Negro */
+      font-size: 1.4rem; /* 🔹 ajustado para celular */
+      color: #000;
       text-shadow: 1px 1px 4px rgba(255,255,255,0.7);
-      max-width: 850px;
-      line-height: 1.5;
+      max-width: 90%;
+      line-height: 1.4;
     }
 
     /* Flecha de scroll */
     .scroll-indicator {
-      position: absolute;
-      bottom: 20px;
-      font-size: 6rem;
+      margin-top: 20px; /* 🔹 más cerca del texto */
+      font-size: 2.5rem;
       color: #ff4d6d;
       animation: bounce 1.5s infinite;
       cursor: pointer;
     }
     @keyframes bounce {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(10px); }
+      50% { transform: translateY(6px); }
+    }
+
+    /* 🔹 Ajustes para pantallas grandes */
+    @media (min-width: 768px) {
+      .player {
+        font-size: 28px;
+        padding: 12px 25px;
+        gap: 10px;
+      }
+      section.frase h1 {
+        font-size: 2rem;
+        max-width: 850px;
+      }
+      .scroll-indicator {
+        font-size: 4rem;
+      }
     }
   </style>
 </head>
@@ -181,4 +196,3 @@
   </script>
 </body>
 </html>
-
